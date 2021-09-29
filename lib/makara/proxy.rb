@@ -63,14 +63,15 @@ module Makara
     attr_reader :control
 
     def initialize(config)
-      @config         = config.symbolize_keys
-      @config_parser  = Makara::ConfigParser.new(@config)
-      @id             = @config_parser.id
-      @ttl            = @config_parser.makara_config[:master_ttl]
-      @sticky         = @config_parser.makara_config[:sticky]
-      @hijacked       = false
-      @error_handler  ||= ::Makara::ErrorHandler.new
-      @skip_sticking  = false
+      @config                                   = config.symbolize_keys
+      @config_parser                            = Makara::ConfigParser.new(@config)
+      @id                                       = @config_parser.id
+      @ttl                                      = @config_parser.makara_config[:master_ttl]
+      @whitelist_on_all_connections_blacklisted = @config_parser.makara_config[:whitelist_on_all_connections_blacklisted]
+      @sticky                                   = @config_parser.makara_config[:sticky]
+      @hijacked                                 = false
+      @error_handler                            ||= ::Makara::ErrorHandler.new
+      @skip_sticking                            = false
       instantiate_connections
       super(config)
     end
@@ -212,8 +213,10 @@ module Makara
       yield pool
     rescue ::Makara::Errors::AllConnectionsBlacklisted, ::Makara::Errors::NoConnectionsAvailable => e
       if pool == @master_pool
-        @master_pool.connections.each(&:_makara_whitelist!)
-        @slave_pool.connections.each(&:_makara_whitelist!)
+        if @whitelist_on_all_connections_blacklisted
+          @master_pool.connections.each(&:_makara_whitelist!)
+          @slave_pool.connections.each(&:_makara_whitelist!)
+        end
         Kernel.raise e
       else
         @master_pool.blacklist_errors << e
