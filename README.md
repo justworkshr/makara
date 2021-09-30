@@ -152,6 +152,7 @@ production:
     # the following are default values
     blacklist_duration: 5
     master_ttl: 5
+    whitelist_on_all_connections_blacklisted: true
     master_strategy: round_robin
     sticky: true
 
@@ -176,6 +177,7 @@ The makara subconfig sets up the proxy with a few of its own options, then provi
 * disable_blacklist - do not blacklist node at any error, useful in case of one master
 * sticky - if a node should be stuck to once it's used during a specific context
 * master_ttl - how long the master context is persisted. generally, this needs to be longer than any replication lag
+* whitelist_on_all_connections_blacklisted - should connections be whitelisted/enabled after they are all blacklisted
 * master_strategy - use a different strategy for picking the "current" master node: `failover` will try to keep the same one until it is blacklisted. The default is `round_robin` which will cycle through available ones.
 * slave_strategy - use a different strategy for picking the "current" slave node: `failover` will try to keep the same one until it is blacklisted. The default is `round_robin` which will cycle through available ones.
 * connection_error_matchers - array of custom error matchers you want to be handled gracefully by Makara (as in, errors matching these regexes will result in blacklisting the connection as opposed to raising directly).

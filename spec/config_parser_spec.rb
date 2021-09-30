@@ -26,6 +26,7 @@ describe Makara::ConfigParser do
     let(:config_without_url) do
       {
         :master_ttl => 5,
+        :whitelist_on_all_connections_blacklisted => true,
         :blacklist_duration => 30,
         :sticky => true,
         :adapter => 'mysql2_makara',
@@ -41,6 +42,7 @@ describe Makara::ConfigParser do
     let(:config_with_url) do
       {
         :master_ttl => 5,
+        :whitelist_on_all_connections_blacklisted => true,
         :blacklist_duration => 30,
         :sticky => true,
         :adapter => 'mysql2_makara',
@@ -117,7 +119,8 @@ describe Makara::ConfigParser do
           :top_level => 'value',
           :sticky => true,
           :blacklist_duration => 30,
-          :master_ttl => 5
+          :master_ttl => 5,
+          :whitelist_on_all_connections_blacklisted => true
         }
       ])
       expect(parser.slave_configs).to eq([
@@ -126,14 +129,16 @@ describe Makara::ConfigParser do
           :top_level => 'value',
           :sticky => true,
           :blacklist_duration => 30,
-          :master_ttl => 5
+          :master_ttl => 5,
+          :whitelist_on_all_connections_blacklisted => true
         },
         {
           :name => 'slave2',
           :top_level => 'value',
           :sticky => true,
           :blacklist_duration => 30,
-          :master_ttl => 5
+          :master_ttl => 5,
+          :whitelist_on_all_connections_blacklisted => true
         }
       ])
     end
@@ -150,7 +155,8 @@ describe Makara::ConfigParser do
           :top_level => 'value',
           :sticky => true,
           :blacklist_duration => 456,
-          :master_ttl => 5
+          :master_ttl => 5,
+          :whitelist_on_all_connections_blacklisted => true
         }
       ])
       expect(parser.slave_configs).to eq([
@@ -159,14 +165,16 @@ describe Makara::ConfigParser do
           :top_level => 'slave value',
           :sticky => true,
           :blacklist_duration => 123,
-          :master_ttl => 5
+          :master_ttl => 5,
+          :whitelist_on_all_connections_blacklisted => true
         },
         {
           :name => 'slave2',
           :top_level => 'value',
           :sticky => true,
           :blacklist_duration => 123,
-          :master_ttl => 5
+          :master_ttl => 5,
+          :whitelist_on_all_connections_blacklisted => true
         }
       ])
     end
