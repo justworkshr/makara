@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: makara
+  description: "A Read-Write Proxy for Connections; Also provides an ActiveRecord adapter."
+  annotations:
+    github.com/project-slug: justworkshr/makara
+    tags:
+    - ruby
+spec:
+  lifecycle: production
+  type: library
+  owner: infra
